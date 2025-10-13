@@ -1,9 +1,8 @@
-﻿#include <iostream>
+#include <iostream>
 #include <windows.h>
 #include <cmath>
 #include <string>
 #include <fstream>
-#include <algorithm>
 using namespace std;
 
 void task1();                                                                                      // Задание 1: "Копирование файла".
@@ -111,17 +110,26 @@ void task2() {                                                                  
 
             cout << " ";
 
+        }
+    }
+}
+
+
+void task3() {                                                                                     // Задание 3: "Сортировка букв".
+    char str[] = "qwertyuiopasdfghjklzxcvbnmqwer";                                                 // Массив 30 элементов (+1 \n)
+    int n = 30;                                                                                    // Исключаем \n
+
+    for (int i = 0; i < n - 1; i++) {                                                              // Пузырьковая сортировка. Проход, больший элементв конец.
+        for (int j = 0; j < n - i - 1; j++) {                                                      // Сравниваем элементы.
+            if (str[j] > str[j + 1]) {                                                             // Меняем местами.
+                char temp = str[j];
+                str[j] = str[j + 1];
+                str[j + 1] = temp;
             }
         }
     }
 
-
-void task3() {                                                                                     // Задание 3: "Сортировка букв".
-    string letters = "jxkphvbmcouygtrfesawzindlqlmao";
-    cout << "Исходная строка: " << letters << endl;
-    
-    sort(letters.begin(), letters.end());                                                          // Сортируем буквы с помощью бибилотеки algorithm.
-    cout << "Отсортированная строка: " << letters << endl;
+    cout << "Отсортированная строка: " << str << endl;
 }
 
 void task4() {                                                                                     // Задание 4: "Алгоритм Евклида".
@@ -132,10 +140,10 @@ void task4() {                                                                  
     cout << "Введите второе число: ";
     cin >> b;
 
-    int a1 = a, b1 = b;                                                                            // Дублируем для второго метода.
+    int a1 = a, b1 = b;                                                                            // Дублируем для первого и второго метода.
+    int temp_a = a, temp_b = b;
 
     cout << "\nМетод деления:" << endl;                                                            // Способ 1: Алгоритм Евклида с делением.
-    int temp_a = a, temp_b = b;
     while (temp_b != 0) {
         int remainder = temp_a % temp_b;                                                           // Вычисляем остаток от деления temp_a на temp_b
         cout << temp_a << " % " << temp_b << " = " << remainder << endl;
@@ -158,21 +166,24 @@ void task4() {                                                                  
     cout << "НОД методом вычитания: " << a1 << endl;
 }
 
-void task5() {                                                                                     // Задание 5: "Заем".
+void task5() {                                                                                     // Задание 5: "Решето Эратосфена".
     int n;
     cout << "Введите число: ";
     cin >> n;
 
-    bool p[1000] = {false};                                                                        // Создаем массив для отметки простых чисел.
+    bool p[1000];                                                                                  // Создаем массив для отметки простых чисел.
+    for (int i = 0; i < 1000; i++) {
+        p[i] = false;                                                                              // Все элементы как false.
+    }
 
-    for (int i = 2; i <= n; i++) {                                                                 // Все числа изначально считаем простыми (кроме 0 и 1).
+    for (int i = 2; i <= n; i++) {                                                                 // Все числа считаем простыми (кроме 0 и 1).
         p[i] = true;
     }
 
     for (int i = 2; i <= n; i++) {                                                                 // Решето Эратосфена.
-        if (p[i]) {
-            for (int j = i * 2; j <= n; j += i) {                                                  // Вычеркиваем кратные i.
-                p[j] = false;
+        if (p[i]) {                                                                                // Если i - прстое
+            for (int j = i * 2; j <= n; j += i) {                                                  // Вычеркиваем, начинаем с первого, переходим к следующему кратному.
+                p[j] = false;                                                                      // Помечаем составное.
             }
         }
     }
@@ -188,7 +199,7 @@ void task5() {                                                                  
 
 void task6() {                                                                                     // Задание 6: "Файл".
     ofstream fout("HW3_Task6.txt");                                                                // Создаем файл и записываем в него 10 готовых чисел.
-    fout << "123 43 2 5678 45 3 10008 9 0 11";
+    fout << "123 43 2 5678 45 3 8 9 0 11";
     fout.close();
 
     cout << "Числа: 123 43 2 5678 45 3 8 9 0 11" << endl;
